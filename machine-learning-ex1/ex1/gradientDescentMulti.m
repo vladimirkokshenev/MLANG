@@ -16,17 +16,26 @@ for iter = 1:num_iters
     % Hint: While debugging, it can be useful to print out the values
     %       of the cost function (computeCostMulti) and gradient here.
     %
- 
-    new_theta = zeros(length(theta),1);
-    for j = 1:length(theta),
-        grad = 0.0;
-        for i = 1:m,
-          grad = grad + (X(i,:)*theta - y(i))*X(i,j);
-        end;
-        new_theta(j) = theta(j) - alpha*grad/m;
+    
+    % semi-vectorized implementation of GD
+    %new_theta = zeros(length(theta),1);
+    %for j = 1:length(theta),
+    %    grad = 0.0;
+    %    for i = 1:m,
+    %      grad = grad + (X(i,:)*theta - y(i))*X(i,j);
+    %    end;
+    %    new_theta(j) = theta(j) - alpha*grad/m;
+    %end;
+    %theta = new_theta;
+    
+    % fully-vectorized implementation of GD
+    delta = zeros(length(theta),1);
+    for i = 1:m,
+        delta = delta + (X(i,:)*theta - y(i))*X(i,:)';
     end;
-    theta = new_theta;
-
+    
+    theta = theta - alpha*delta/m;
+    
     % ============================================================
 
     % Save the cost J in every iteration    
