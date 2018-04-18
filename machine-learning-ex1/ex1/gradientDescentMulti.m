@@ -28,13 +28,15 @@ for iter = 1:num_iters
     %end;
     %theta = new_theta;
     
-    % fully-vectorized implementation of GD
-    delta = zeros(length(theta),1);
-    for i = 1:m,
-        delta = delta + (X(i,:)*theta - y(i))*X(i,:)';
-    end;
+    % not yet fully-vectorized implementation of GD
+    %delta = zeros(length(theta),1);
+    %for i = 1:m,
+    %    delta = delta + (X(i,:)*theta - y(i))*X(i,:)';
+    %end;
+    %theta = theta - alpha*delta/m;
     
-    theta = theta - alpha*delta/m;
+    % true fully-vectorized GD computation
+    theta = theta - (alpha/m)*X'*(X*theta-y);
     
     % ============================================================
 
