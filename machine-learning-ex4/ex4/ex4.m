@@ -238,33 +238,37 @@ pred = predict(Theta1, Theta2, X);
 fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
 
 % analysis for accuracy dependency on number of iteration
-total_iters = [25; 50; 100; 200];
-accuracy_by_iterations = zeros(length(total_iters),1);
-for i = 1:length(total_iters),
-    options = optimset('MaxIter', total_iters(i));
-    lambda = 1;
-    [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
-    Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
-                 hidden_layer_size, (input_layer_size + 1));
+%total_iters = [25; 50; 100; 200];
+%accuracy_by_iterations = zeros(length(total_iters),1);
+%for i = 1:length(total_iters),
+%    options = optimset('MaxIter', total_iters(i));
+%    lambda = 1;
+%    [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
+%    Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
+%                 hidden_layer_size, (input_layer_size + 1));
 
-    Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
-                 num_labels, (hidden_layer_size + 1));
-    
-    pred = predict(Theta1, Theta2, X);
-    accuracy_by_iterations(i) = mean(double(pred == y)) * 100;
-end;
+%    Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
+%                 num_labels, (hidden_layer_size + 1));
+%    
+%    pred = predict(Theta1, Theta2, X);
+%    accuracy_by_iterations(i) = mean(double(pred == y)) * 100;
+%end;
 
-plot(total_iters, accuracy_by_iterations, 'rx', 'MarkerSize', 10);
-ylabel('Accuracy achieved with specified number of iterations');
-xlabel('Number of iterations');
+%plot(total_iters, accuracy_by_iterations, 'rx', 'MarkerSize', 10);
+%ylabel('Accuracy achieved with specified number of iterations');
+%xlabel('Number of iterations');
 
 keyboard;
 
 lambda_vals = [0.1; 0.3; 1.0; 3.0];
 accuracy_by_lambda = zeros(length(lambda_vals),1);
-for i = 1:length(total_iters),
+for i = 1:length(lambda_vals),
     options = optimset('MaxIter', 50);
     lambda = lambda_vals(i);
+    costFunction = @(p) nnCostFunction(p, ...
+                                   input_layer_size, ...
+                                   hidden_layer_size, ...
+                                   num_labels, X, y, lambda);
     [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
     Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
                  hidden_layer_size, (input_layer_size + 1));
