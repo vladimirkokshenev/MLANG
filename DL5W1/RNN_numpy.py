@@ -382,17 +382,15 @@ def rnn_backward(da, caches):
                         dba -- Gradient w.r.t the bias, of shape (n_a, 1)
     """
 
-    ### START CODE HERE ###
-
-    # Retrieve values from the first cache (t=1) of caches (≈2 lines)
+    # Retrieve values from the first cache (t=1) of caches
     (caches, x) = caches
     (a1, a0, x1, parameters) = caches[0]
 
-    # Retrieve dimensions from da's and x1's shapes (≈2 lines)
+    # Retrieve dimensions from da's and x1's shapes
     n_a, m, T_x = da.shape
     n_x, m = x1.shape
 
-    # initialize the gradients with the right sizes (≈6 lines)
+    # initialize the gradients with the right sizes
     dx = np.zeros((n_x, m, T_x))
     dWax = np.zeros((n_a, n_x))
     dWaa = np.zeros((n_a, n_a))
